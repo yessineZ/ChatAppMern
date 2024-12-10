@@ -6,12 +6,10 @@ export const signup = async (req, res) => {
     try {
         const { fullName, username, email, password, confirmPassword, gender ,profilePic } = req.body;
 
-        // Check if passwords match
         if (password !== confirmPassword) {
             return res.status(400).send({ error: "Passwords do not match" });
         }
 
-        // Check if the username already exists
         const existingUser = await User.findOne({ username });
         if (existingUser) {
             return res.status(400).json({ error: "Username already exists" });
@@ -19,10 +17,8 @@ export const signup = async (req, res) => {
 
        
 
-        // Hash the password
         const hashedPassword = bcrypt.hashSync(password, 8);
 
-        // Create a new user
         const newUser = new User({
             fullName,
             username,
@@ -47,10 +43,8 @@ export const signup = async (req, res) => {
 
         }
 
-        // Save the new user
         
 
-        // Respond with the newly created user's details
         
     } catch (error) {
         console.log("Error in signup controller:", error.message);
@@ -84,7 +78,7 @@ export const login  = async (req, res) => {
 
 export const logout = (req, res) => {
     try {
-    res.clearCookie("jwt")  ;//
+    res.clearCookie("jwt")  ;
     res.status(200).json({message : "logged out successfully "});
     }catch(error) {
         console.log("Error in logout controller:", error.message);
